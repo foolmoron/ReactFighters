@@ -1,0 +1,21 @@
+{
+  "name": "react-fighters",
+  "version": "1.0.0",
+  "description": "A little RPG game to learn React and Redux",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/foolmoron/ReactFighters.git"
+  },
+  "keywords": [
+    "react",
+    "rpg",
+    "game",
+    "redux",
+    "fighters"
+  ],
+  "author": "foolmoron",
+  "bugs": {
+    "url": "https://github.com/foolmoron/ReactFighters/issues"
+  },
+  "homepage": "https://github.com/foolmoron/ReactFighters#readme"
+}
