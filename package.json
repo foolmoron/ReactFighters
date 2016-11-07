@@ -1,6 +1,9 @@
 {
   "name": "react-fighters",
   "version": "1.0.0",
+  "scripts": {
+    "dev": "node_modules/.bin/webpack-dev-server.cmd --progress --colors"
+  },
   "description": "A little RPG game to learn React and Redux",
   "repository": {
     "type": "git",
@@ -17,5 +20,17 @@
   "bugs": {
     "url": "https://github.com/foolmoron/ReactFighters/issues"
   },
-  "homepage": "https://github.com/foolmoron/ReactFighters#readme"
+  "homepage": "https://github.com/foolmoron/ReactFighters#readme",
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-loader": "^6.2.7",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
+  }
 }
