@@ -1,0 +1,14 @@
+.world
+    position: absolute
+    left: gameOriginX
+    top: gameOriginY
+    width: gameSize
+    height: gameSize
+
+    .scrolling-bg
+        position: absolute
+        width: 100%
+        height: 100%
+        background-image: url(IMG_ROOT + 'grasstile.png')
+        &.dark
+            background-image: url(IMG_ROOT + 'grasstiledark.png')
