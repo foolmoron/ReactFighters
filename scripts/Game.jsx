@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import GameBorder from './GameBorder.jsx';
 import World from './World.jsx';
+import Character from './Character.jsx';
  
 class Game extends React.Component {
     static propTypes = {};
@@ -22,6 +23,7 @@ class Game extends React.Component {
         return (
             <div className="game">
                 <World />
+                <Character sprite="./sprites/character.png" />
                 <GameBorder />
             </div>
         );
