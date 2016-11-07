@@ -82,6 +82,10 @@
 	
 	var _Character2 = _interopRequireDefault(_Character);
 	
+	var _character = __webpack_require__(176);
+	
+	var _character2 = _interopRequireDefault(_character);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -112,7 +116,7 @@
 	                'div',
 	                { className: 'game' },
 	                _react2.default.createElement(_World2.default, null),
-	                _react2.default.createElement(_Character2.default, { sprite: './sprites/character.png' }),
+	                _react2.default.createElement(_Character2.default, { sprite: _character2.default }),
 	                _react2.default.createElement(_GameBorder2.default, null)
 	            );
 	        }
@@ -21685,17 +21689,11 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _character = __webpack_require__(176);
-	
-	var _image = _interopRequireWildcard(_character);
-	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -21793,7 +21791,7 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _react2.default.createElement('img', { className: 'character', src: _image.default, style: { transform: 'rotateZ(' + this.state.angle + 'deg) scaleY(' + (this.state.angle >= 270 || this.state.angle < 90 ? 1 : -1) + ')' } });
+	            return _react2.default.createElement('img', { className: 'character', src: this.props.sprite, style: { transform: 'rotateZ(' + this.state.angle + 'deg) scaleY(' + (this.state.angle >= 270 || this.state.angle < 90 ? 1 : -1) + ')' } });
 	        }
 	    }]);
 	
