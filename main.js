@@ -1,2 +1,2 @@
-import Game from './scripts/game.jsx';
+import Game from './scripts/Game.jsx';
 import './styles/main.styl';
