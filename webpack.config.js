@@ -4,21 +4,30 @@ var webpack = require('webpack');
 module.exports = {
     entry: './main.js',
     output: { path: __dirname, filename: 'bundle.js' },
+    devtool: 'source-map',
     module: {
         loaders: [
             {
-                test: /.jsx?$/,
+                test: /.jsx?$/i,
                 loader: 'babel',
-                include: [path.resolve(__dirname, './main.js'), path.resolve(__dirname, './scripts')],
+                include: [/main.js/, /scripts.*/],
                 query: {
                     presets: ['es2015', 'react'],
                     plugins: ["transform-class-properties"]
-                }
+                },
             },
             {
-                test: /\.styl$/, 
+                test: /\.styl$/i, 
                 loader: 'style!css!stylus',
-                include: [path.resolve(__dirname, './styles')],
+                include: [/styles.*/],
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loaders: [
+                    'file?hash=sha512&digest=hex&name=[hash].[ext]',
+                    'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+                ],
+                include: [/sprites.*/],
             }
         ]
     },

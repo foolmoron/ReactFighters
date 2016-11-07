@@ -2,12 +2,11 @@
     position: absolute
     width: 100%
     height: 100%
-    background: black
-    
-gameBorderSize = 8px
+
 .game-border
-    width: 'calc(100% - %s)' % (2*gameBorderSize)
-    height: 'calc(100% - %s)' % (2*gameBorderSize)
+    position: absolute
+    width: gameSize
+    height: gameSize
     background: transparent
     border: gameBorderSize solid white
-    border-radius: 10px
+    border-radius: 16px

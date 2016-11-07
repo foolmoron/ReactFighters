@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import GameBorder from './GameBorder.jsx';
+import World from './World.jsx';
  
 class Game extends React.Component {
     static propTypes = {};
@@ -18,9 +20,14 @@ class Game extends React.Component {
 
     render() {
         return (
-            <GameBorder />
+            <div className="game">
+                <World />
+                <GameBorder />
+            </div>
         );
     }
 }
 
-ReactDOM.render(<Game />, document.getElementById('game'));
+ReactDOM.render(<Game />, document.getElementById('root'));
+
+module.exports = Game;

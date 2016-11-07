@@ -1,13 +1,10 @@
-var React = require('react');
+import React from 'react';
 
-var GameBorder = React.createClass({
-
-    render: function() {
+class GameBorder extends React.Component {
+    render() {
         return (
             <div className="game-border" />
         );
     }
-
-});
-
+}
 module.exports = GameBorder;
