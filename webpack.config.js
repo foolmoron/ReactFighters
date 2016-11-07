@@ -8,7 +8,7 @@ module.exports = {
         loaders: [
             {
                 test: /.jsx?$/,
-                loader: 'babel-loader',
+                loader: 'babel',
                 include: [path.resolve(__dirname, './main.js'), path.resolve(__dirname, './scripts')],
                 query: {
                     presets: ['es2015', 'react']
@@ -16,7 +16,7 @@ module.exports = {
             },
             {
                 test: /\.styl$/, 
-                loader: 'style-loader!css-loader!stylus-loader',
+                loader: 'style!css!stylus',
                 include: [path.resolve(__dirname, './styles')],
             }
         ]
