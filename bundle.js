@@ -50,7 +50,7 @@
 	
 	var _Game2 = _interopRequireDefault(_Game);
 	
-	__webpack_require__(176);
+	__webpack_require__(177);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21685,11 +21685,17 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _character = __webpack_require__(176);
+	
+	var _image = _interopRequireWildcard(_character);
+	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -21787,7 +21793,7 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _react2.default.createElement('img', { className: 'character', src: this.props.sprite, style: { transform: 'rotateZ(' + this.state.angle + 'deg) scaleY(' + (this.state.angle >= 270 || this.state.angle < 90 ? 1 : -1) + ')' } });
+	            return _react2.default.createElement('img', { className: 'character', src: _image.default, style: { transform: 'rotateZ(' + this.state.angle + 'deg) scaleY(' + (this.state.angle >= 270 || this.state.angle < 90 ? 1 : -1) + ')' } });
 	        }
 	    }]);
 	
@@ -21800,13 +21806,19 @@
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__.p + "character.5e33b73a4b62a86a10e2a534b414553c.png";
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(177);
+	var content = __webpack_require__(178);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(181)(content, {});
+	var update = __webpack_require__(182)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21823,21 +21835,21 @@
 	}
 
 /***/ },
-/* 177 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(178)();
+	exports = module.exports = __webpack_require__(179)();
 	// imports
 	
 	
 	// module
-	exports.push([module.id, "body {\n  background: #000;\n  margin: 0;\n}\n.game {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n}\n.game-border {\n  position: absolute;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n  background: transparent;\n  border: 8px solid #fff;\n  border-radius: 16px;\n}\n.world {\n  position: absolute;\n  left: 8px;\n  top: 8px;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n}\n.world .scrolling-bg {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-image: url(" + __webpack_require__(179) + ");\n}\n.world .scrolling-bg.dark {\n  background-image: url(" + __webpack_require__(180) + ");\n}\n.character {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n}\n", ""]);
+	exports.push([module.id, "body {\n  background: #000;\n  margin: 0;\n}\n.game {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n}\n.game-border {\n  position: absolute;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n  background: transparent;\n  border: 8px solid #fff;\n  border-radius: 16px;\n}\n.world {\n  position: absolute;\n  left: 8px;\n  top: 8px;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n}\n.world .scrolling-bg {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-image: url(" + __webpack_require__(180) + ");\n}\n.world .scrolling-bg.dark {\n  background-image: url(" + __webpack_require__(181) + ");\n}\n.character {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n}\n", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 178 */
+/* 179 */
 /***/ function(module, exports) {
 
 	/*
@@ -21893,19 +21905,19 @@
 
 
 /***/ },
-/* 179 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "grasstile.3d974594f91ec584844e133e1f69d6a7.png";
 
 /***/ },
-/* 180 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "grasstiledark.9d0f664e7b8167e274cfaa5f9f6d7019.png";
 
 /***/ },
-/* 181 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
