@@ -21608,8 +21608,13 @@
 	            var dt = (performance.now() - _this.prevTime) / 1000;
 	            _this.prevTime = performance.now();
 	            // process update
-	            _this.state.velY = _this.state.dirs.U ? -_this.props.speed : _this.state.dirs.D ? _this.props.speed : 0;
-	            _this.state.velX = _this.state.dirs.L ? -_this.props.speed : _this.state.dirs.R ? _this.props.speed : 0;
+	            _this.state.velX = _this.state.dirs.L ? -1 : _this.state.dirs.R ? 1 : 0;
+	            _this.state.velY = _this.state.dirs.U ? -1 : _this.state.dirs.D ? 1 : 0;
+	            var normalized = Math.sqrt(_this.state.velX * _this.state.velX + _this.state.velY * _this.state.velY);
+	            if (normalized) {
+	                _this.state.velX = _this.state.velX * _this.props.speed / normalized;
+	                _this.state.velY = _this.state.velY * _this.props.speed / normalized;
+	            }
 	            _this.state.velX += _this.state.accelX * dt;
 	            _this.state.velY += _this.state.accelY * dt;
 	            _this.state.posX += _this.state.velX * dt;
@@ -21791,7 +21796,16 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _react2.default.createElement('img', { className: 'character', src: this.props.sprite, style: { transform: 'rotateZ(' + this.state.angle + 'deg) scaleY(' + (this.state.angle >= 270 || this.state.angle < 90 ? 1 : -1) + ')' } });
+	            var moving = this.state.dirs.U || this.state.dirs.D || this.state.dirs.L || this.state.dirs.R;
+	            var imgs = [];
+	            for (var i = 0; i < 7; i++) {
+	                imgs.unshift(_react2.default.createElement('img', { key: i, className: 'character-sprite trail' + i, src: this.props.sprite }));
+	            }
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'character' + (moving ? ' moving' : ''), style: { transform: 'rotateZ(' + this.state.angle + 'deg) scaleY(' + (this.state.angle >= 270 || this.state.angle < 90 ? 1 : -1) + ')' } },
+	                imgs
+	            );
 	        }
 	    }]);
 	
@@ -21804,7 +21818,7 @@
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "character.5e33b73a4b62a86a10e2a534b414553c.png";
+	module.exports = __webpack_require__.p + "character.916f97dfd920bbbb12b58b23613fcd95.png";
 
 /***/ },
 /* 177 */
@@ -21841,7 +21855,7 @@
 	
 	
 	// module
-	exports.push([module.id, "body {\n  background: #000;\n  margin: 0;\n}\n.game {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n}\n.game-border {\n  position: absolute;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n  background: transparent;\n  border: 8px solid #fff;\n  border-radius: 16px;\n}\n.world {\n  position: absolute;\n  left: 8px;\n  top: 8px;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n}\n.world .scrolling-bg {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-image: url(" + __webpack_require__(180) + ");\n}\n.world .scrolling-bg.dark {\n  background-image: url(" + __webpack_require__(181) + ");\n}\n.character {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n}\n", ""]);
+	exports.push([module.id, "body {\n  background: #000;\n  margin: 0;\n}\n.game {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n}\n.game-border {\n  position: absolute;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n  background: transparent;\n  border: 8px solid #fff;\n  border-radius: 16px;\n  pointer-events: none;\n}\n.world {\n  position: absolute;\n  left: 8px;\n  top: 8px;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n}\n.world .scrolling-bg {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-image: url(" + __webpack_require__(180) + ");\n}\n.world .scrolling-bg.dark {\n  background-image: url(" + __webpack_require__(181) + ");\n  animation: contrastCycle 5.5s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95), fadeCycle 3.9s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);\n}\n@-moz-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-webkit-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-o-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-moz-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@-webkit-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@-o-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n.character {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n}\n.character .character-sprite {\n  position: absolute;\n  transform: translate3d(-50%, -50%, 0);\n}\n.character.moving .character-sprite {\n  animation: bobbing 0.4s infinite linear;\n}\n.character.moving .character-sprite.trail1 {\n  animation-delay: 0.03s;\n  transform: translate3d(-60%, -50%, 0);\n  opacity: 0.8;\n}\n.character.moving .character-sprite.trail2 {\n  animation-delay: 0.06s;\n  transform: translate3d(-70%, -50%, 0);\n  opacity: 0.6;\n}\n.character.moving .character-sprite.trail3 {\n  animation-delay: 0.09s;\n  transform: translate3d(-80%, -50%, 0);\n  opacity: 0.4;\n}\n.character.moving .character-sprite.trail4 {\n  animation-delay: 0.12s;\n  transform: translate3d(-90%, -50%, 0);\n  opacity: 0.2;\n}\n.character.moving .character-sprite.trail5 {\n  animation-delay: 0.15s;\n  transform: translate3d(-100%, -50%, 0);\n  opacity: 0;\n}\n.character.moving .character-sprite.trail6 {\n  animation-delay: 0.18s;\n  transform: translate3d(-110%, -50%, 0);\n  opacity: -0.2;\n}\n.character.moving .character-sprite.trail7 {\n  animation-delay: 0.21s;\n  transform: translate3d(-120%, -50%, 0);\n  opacity: -0.4;\n}\n@-moz-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@-webkit-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@-o-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n", ""]);
 	
 	// exports
 
