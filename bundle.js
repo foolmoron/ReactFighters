@@ -21749,21 +21749,21 @@
 	        };
 	
 	        _this._getNewAngle = function (dirs, prevAngle) {
-	            if (dirs.R) {
-	                if (dirs.U) {
-	                    return 315;
-	                } else if (dirs.D) {
-	                    return 45;
-	                } else {
-	                    return 0;
-	                }
-	            } else if (dirs.L) {
+	            if (dirs.L) {
 	                if (dirs.U) {
 	                    return 225;
 	                } else if (dirs.D) {
 	                    return 135;
 	                } else {
 	                    return 180;
+	                }
+	            } else if (dirs.R) {
+	                if (dirs.U) {
+	                    return 315;
+	                } else if (dirs.D) {
+	                    return 45;
+	                } else {
+	                    return 0;
 	                }
 	            } else if (dirs.U) {
 	                return 270;
