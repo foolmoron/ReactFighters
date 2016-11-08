@@ -55,8 +55,15 @@ class Character extends React.Component {
     }
 
     render() {
+        var moving = this.state.dirs.U || this.state.dirs.D || this.state.dirs.L || this.state.dirs.R;
+        var imgs = []
+        for (var i = 0; i < 7; i++) {
+            imgs.unshift(<img key={i} className={'character-sprite trail' + i} src={this.props.sprite} />);
+        }
         return (
-            <img className="character" src={this.props.sprite} style={{transform: `rotateZ(${this.state.angle}deg) scaleY(${(this.state.angle >= 270 || this.state.angle < 90) ? 1 : -1})`}} />
+            <div className={'character' + (moving ? ' moving' : '')} style={{transform: `rotateZ(${this.state.angle}deg) scaleY(${(this.state.angle >= 270 || this.state.angle < 90) ? 1 : -1})`}}>
+                {imgs}
+            </div>
         );
     }
 }

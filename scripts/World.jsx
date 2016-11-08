@@ -65,8 +65,13 @@ class World extends React.Component {
         var dt = (performance.now() - this.prevTime) / 1000;
         this.prevTime = performance.now();
         // process update
-        this.state.velY = (this.state.dirs.U) ? -this.props.speed : (this.state.dirs.D) ? this.props.speed : 0;
-        this.state.velX = (this.state.dirs.L) ? -this.props.speed : (this.state.dirs.R) ? this.props.speed : 0;
+        this.state.velX = (this.state.dirs.L) ? -1 : (this.state.dirs.R) ? 1 : 0;
+        this.state.velY = (this.state.dirs.U) ? -1 : (this.state.dirs.D) ? 1 : 0;
+        var normalized = Math.sqrt(this.state.velX*this.state.velX + this.state.velY*this.state.velY);
+        if (normalized) {
+            this.state.velX = this.state.velX * this.props.speed / normalized;
+            this.state.velY = this.state.velY * this.props.speed / normalized;
+        }
         this.state.velX += this.state.accelX * dt;
         this.state.velY += this.state.accelY * dt;
         this.state.posX += this.state.velX * dt;
