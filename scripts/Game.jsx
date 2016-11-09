@@ -50,4 +50,4 @@ ReactDOM.render(
     </Provider>, document.getElementById('root')
 );
 
-module.exports = Game;
+export default Game;

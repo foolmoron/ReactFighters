@@ -1,0 +1,16 @@
+.go
+    position: fixed
+    
+    .go-sprite
+        transform: translate3d(-50%, -50%, 0)
+        
+
+        @keyframes pulseAndSway {
+            0% { transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg)  }
+            25% { transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg)  }
+            50% { transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg) }
+            75% { transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg)  }
+            100% { transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg)  }
+        }
+        &.pulseAndSway
+            animation: pulseAndSway 1.2s infinite linear
