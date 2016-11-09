@@ -22,7 +22,7 @@ const Character = withTypes({
 export default connect(
     (state, props) => ({ 
         angle: state.character.angle,
-        moving: state.direction.U || state.direction.D || state.direction.L || state.direction.R,
+        moving: state.direction.x != 0 || state.direction.y != 0,
     }), 
     (dispatch, props) => ({
     })

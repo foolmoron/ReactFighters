@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import reducers from './reducers';
 
 import KeyInputContainer from './containers/KeyInputContainer.jsx';
+import MouseInputContainer from './containers/MouseInputContainer.jsx';
 import UpdateContainer from './containers/UpdateContainer.jsx';
 
 import GameBorder from './components/GameBorder.jsx';
@@ -33,6 +34,7 @@ class Game extends React.Component {
             <div className="game">
                 <div className="global-containers" style={{hidden: true}}>
                     <KeyInputContainer />
+                    <MouseInputContainer />
                     <UpdateContainer />
                 </div>
                 <World />

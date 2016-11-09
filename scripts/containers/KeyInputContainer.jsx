@@ -19,7 +19,7 @@ class KeyInputContainer extends React.Component {
         this.props.dispatch({ type: KEY_UP, key: e.code });
     }
 
-    render = () => <div className="input-direction-container"></div>;
+    render = () => <div className="key-input-container"></div>;
 }
 
 module.exports = connect()(KeyInputContainer);
