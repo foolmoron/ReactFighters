@@ -50,7 +50,7 @@
 	
 	var _Game2 = _interopRequireDefault(_Game);
 	
-	__webpack_require__(216);
+	__webpack_require__(219);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59,6 +59,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -78,27 +82,31 @@
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
 	
-	var _KeyInputContainer = __webpack_require__(209);
+	var _KeyInputContainer = __webpack_require__(210);
 	
 	var _KeyInputContainer2 = _interopRequireDefault(_KeyInputContainer);
 	
-	var _UpdateContainer = __webpack_require__(210);
+	var _MouseInputContainer = __webpack_require__(211);
+	
+	var _MouseInputContainer2 = _interopRequireDefault(_MouseInputContainer);
+	
+	var _UpdateContainer = __webpack_require__(212);
 	
 	var _UpdateContainer2 = _interopRequireDefault(_UpdateContainer);
 	
-	var _GameBorder = __webpack_require__(211);
+	var _GameBorder = __webpack_require__(213);
 	
 	var _GameBorder2 = _interopRequireDefault(_GameBorder);
 	
-	var _World = __webpack_require__(213);
+	var _World = __webpack_require__(215);
 	
 	var _World2 = _interopRequireDefault(_World);
 	
-	var _Character = __webpack_require__(214);
+	var _Character = __webpack_require__(217);
 	
 	var _Character2 = _interopRequireDefault(_Character);
 	
-	var _character = __webpack_require__(215);
+	var _character = __webpack_require__(218);
 	
 	var _character2 = _interopRequireDefault(_character);
 	
@@ -135,6 +143,7 @@
 	                    'div',
 	                    { className: 'global-containers', style: { hidden: true } },
 	                    _react2.default.createElement(_KeyInputContainer2.default, null),
+	                    _react2.default.createElement(_MouseInputContainer2.default, null),
 	                    _react2.default.createElement(_UpdateContainer2.default, null)
 	                ),
 	                _react2.default.createElement(_World2.default, null),
@@ -158,7 +167,7 @@
 	    _react2.default.createElement(Game, null)
 	), document.getElementById('root'));
 	
-	module.exports = Game;
+	exports.default = Game;
 
 /***/ },
 /* 2 */
@@ -23290,7 +23299,7 @@
 	
 	var _worldReducer2 = _interopRequireDefault(_worldReducer);
 	
-	var _characterReducer = __webpack_require__(208);
+	var _characterReducer = __webpack_require__(209);
 	
 	var _characterReducer2 = _interopRequireDefault(_characterReducer);
 	
@@ -23330,6 +23339,7 @@
 	        D: false,
 	        L: false,
 	        R: false,
+	        M: false,
 	        x: 0,
 	        y: 0
 	    };
@@ -23369,6 +23379,32 @@
 	            x = _normalize2[0];
 	            y = _normalize2[1];
 	            return Object.assign({}, state, { U: U, D: D, L: L, R: R, x: x, y: y });
+	        case _actions.MOUSE_UP:
+	            // disable movement
+	            return Object.assign({}, state, { x: 0, y: 0, M: false });
+	        case _actions.MOUSE_DOWN:
+	        case _actions.MOUSE_MOVE:
+	            var x = state.x,
+	                y = state.y,
+	                M = state.M;
+	            // mouse bool
+	
+	            M = M || action.type == _actions.MOUSE_DOWN;
+	            // direction is relative to center of viewport
+	            if (M) {
+	                // only when mouse is down
+	                var w = window.innerWidth;
+	                var h = window.innerHeight;
+	
+	                var _normalize3 = (0, _vector.normalize)([action.mouseX - w / 2, action.mouseY - h / 2]);
+	
+	                var _normalize4 = _slicedToArray(_normalize3, 2);
+	
+	                x = _normalize4[0];
+	                y = _normalize4[1];
+	            }
+	            // return new state
+	            return Object.assign({}, state, { x: x, y: y, M: M });
 	        default:
 	            return state;
 	    }
@@ -23386,8 +23422,14 @@
 	// key input
 	var KEY_UP = exports.KEY_UP = 'KEY_UP';
 	var KEY_DOWN = exports.KEY_DOWN = 'KEY_DOWN';
+	// mouse input
+	var MOUSE_UP = exports.MOUSE_UP = 'MOUSE_UP';
+	var MOUSE_DOWN = exports.MOUSE_DOWN = 'MOUSE_DOWN';
+	var MOUSE_MOVE = exports.MOUSE_MOVE = 'MOUSE_MOVE';
 	// update
 	var UPDATE = exports.UPDATE = 'UPDATE';
+	// objects
+	var OBJECT_ADD = exports.OBJECT_ADD = 'OBJECT_ADD';
 
 /***/ },
 /* 206 */
@@ -23416,6 +23458,22 @@
 	
 	var _actions = __webpack_require__(205);
 	
+	var _gem = __webpack_require__(208);
+	
+	var _gem2 = _interopRequireDefault(_gem);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var initialObjects = [];
+	for (var i = 0; i < 10; i++) {
+	    initialObjects.push({
+	        sprite: _gem2.default,
+	        posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+	        posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+	        extraClasses: ['pulseAndSway']
+	    });
+	}
+	
 	exports.default = function () {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
 	        posX: 0,
@@ -23424,12 +23482,18 @@
 	        velY: 0,
 	        accelX: 0,
 	        accelY: 0,
-	        speed: 500
+	        speed: 500,
+	        gameObjects: initialObjects
 	    };
 	    var action = arguments[1];
 	    var fullState = arguments[2];
 	
 	    switch (action.type) {
+	        case _actions.OBJECT_ADD:
+	            var gameObjects = state.gameObjects;
+	
+	            gameObjects.push({ id: gameObjects.length + 1, sprite: action.sprite, posX: action.posX, posY: action.posY, extraClasses: action.extraClasses });
+	            return Object.assign({}, state, { gameObjects: gameObjects });
 	        case _actions.UPDATE:
 	            var dt = action.dt;
 	            var posX = state.posX,
@@ -23457,6 +23521,12 @@
 /* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__.p + "gem.8b88863a2b39ed34344bc4d0d301ebc2.png";
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -23481,7 +23551,7 @@
 	};
 
 /***/ },
-/* 209 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23523,7 +23593,7 @@
 	        }, _this._onKeyUp = function (e) {
 	            _this.props.dispatch({ type: _actions.KEY_UP, key: e.code });
 	        }, _this.render = function () {
-	            return _react2.default.createElement('div', { className: 'input-direction-container' });
+	            return _react2.default.createElement('div', { className: 'key-input-container' });
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 	
@@ -23547,7 +23617,83 @@
 	module.exports = (0, _reactRedux.connect)()(KeyInputContainer);
 
 /***/ },
-/* 210 */
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(194);
+	
+	var _actions = __webpack_require__(205);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var MouseInputContainer = function (_React$Component) {
+	    _inherits(MouseInputContainer, _React$Component);
+	
+	    function MouseInputContainer() {
+	        var _ref;
+	
+	        var _temp, _this, _ret;
+	
+	        _classCallCheck(this, MouseInputContainer);
+	
+	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	            args[_key] = arguments[_key];
+	        }
+	
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MouseInputContainer.__proto__ || Object.getPrototypeOf(MouseInputContainer)).call.apply(_ref, [this].concat(args))), _this), _this._onMouseDown = function (e) {
+	            _this.props.dispatch({ type: _actions.MOUSE_DOWN, mouseX: e.clientX, mouseY: e.clientY });
+	        }, _this._onMouseMove = function (e) {
+	            _this.props.dispatch({ type: _actions.MOUSE_MOVE, mouseX: e.clientX, mouseY: e.clientY });
+	        }, _this._onMouseUp = function (e) {
+	            _this.props.dispatch({ type: _actions.MOUSE_UP, mouseX: e.clientX, mouseY: e.clientY });
+	        }, _this.render = function () {
+	            return _react2.default.createElement('div', { className: 'mouse-input-container' });
+	        }, _temp), _possibleConstructorReturn(_this, _ret);
+	    }
+	
+	    _createClass(MouseInputContainer, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            document.addEventListener('mousedown', this._onMouseDown);
+	            document.addEventListener('touchstart', this._onMouseDown);
+	            document.addEventListener('mousemove', this._onMouseMove);
+	            document.addEventListener('touchmove', this._onMouseMove);
+	            document.addEventListener('mouseup', this._onMouseUp);
+	            document.addEventListener('touchend', this._onMouseUp);
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            document.removeEventListener('mousedown', this._onMouseDown);
+	            document.removeEventListener('touchstart', this._onMouseDown);
+	            document.removeEventListener('mousemove', this._onMouseMove);
+	            document.removeEventListener('touchmove', this._onMouseMove);
+	            document.removeEventListener('mouseup', this._onMouseUp);
+	            document.removeEventListener('touchend', this._onMouseUp);
+	        }
+	    }]);
+	
+	    return MouseInputContainer;
+	}(_react2.default.Component);
+	
+	module.exports = (0, _reactRedux.connect)()(MouseInputContainer);
+
+/***/ },
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23621,7 +23767,7 @@
 	module.exports = (0, _reactRedux.connect)()(UpdateContainer);
 
 /***/ },
-/* 211 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23636,7 +23782,7 @@
 	
 	var _reactRedux = __webpack_require__(194);
 	
-	var _withTypes = __webpack_require__(212);
+	var _withTypes = __webpack_require__(214);
 	
 	var _withTypes2 = _interopRequireDefault(_withTypes);
 	
@@ -23657,7 +23803,7 @@
 	})(GameBorder);
 
 /***/ },
-/* 212 */
+/* 214 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -23672,7 +23818,7 @@
 	}
 
 /***/ },
-/* 213 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23687,9 +23833,13 @@
 	
 	var _reactRedux = __webpack_require__(194);
 	
-	var _withTypes = __webpack_require__(212);
+	var _withTypes = __webpack_require__(214);
 	
 	var _withTypes2 = _interopRequireDefault(_withTypes);
+	
+	var _GameObject = __webpack_require__(216);
+	
+	var _GameObject2 = _interopRequireDefault(_GameObject);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23698,27 +23848,32 @@
 	    posY: _react2.default.PropTypes.number
 	}, function (_ref) {
 	    var posX = _ref.posX,
-	        posY = _ref.posY;
+	        posY = _ref.posY,
+	        gameObjects = _ref.gameObjects;
 	
 	    return _react2.default.createElement(
 	        'div',
 	        { className: 'world' },
 	        _react2.default.createElement('div', { className: 'scrolling-bg', style: { backgroundPositionX: -posX, backgroundPositionY: -posY } }),
-	        _react2.default.createElement('div', { className: 'scrolling-bg dark', style: { backgroundPositionX: -(posX + 24), backgroundPositionY: -(posY + 24) } })
+	        _react2.default.createElement('div', { className: 'scrolling-bg dark', style: { backgroundPositionX: -(posX + 24), backgroundPositionY: -(posY + 24) } }),
+	        gameObjects.map(function (obj, i) {
+	            return _react2.default.createElement(_GameObject2.default, { key: i, sprite: obj.sprite, posX: obj.posX - posX, posY: obj.posY - posY, extraClasses: obj.extraClasses });
+	        })
 	    );
 	});
 	
 	exports.default = (0, _reactRedux.connect)(function (state, props) {
 	    return {
 	        posX: state.world.posX,
-	        posY: state.world.posY
+	        posY: state.world.posY,
+	        gameObjects: state.world.gameObjects
 	    };
 	}, function (dispatch, props) {
 	    return {};
 	})(World);
 
 /***/ },
-/* 214 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23733,7 +23888,53 @@
 	
 	var _reactRedux = __webpack_require__(194);
 	
-	var _withTypes = __webpack_require__(212);
+	var _withTypes = __webpack_require__(214);
+	
+	var _withTypes2 = _interopRequireDefault(_withTypes);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var GameObject = (0, _withTypes2.default)({
+	    sprite: _react2.default.PropTypes.string,
+	    posX: _react2.default.PropTypes.number,
+	    posY: _react2.default.PropTypes.number,
+	    extraClasses: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string)
+	}, function (_ref) {
+	    var sprite = _ref.sprite,
+	        posX = _ref.posX,
+	        posY = _ref.posY,
+	        extraClasses = _ref.extraClasses;
+	
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'go', style: { transform: 'translate3d(' + posX + 'px, ' + posY + 'px, 0)' } },
+	        _react2.default.createElement('img', { className: ['go-sprite'].concat(extraClasses).join(' '), src: sprite })
+	    );
+	});
+	
+	exports.default = (0, _reactRedux.connect)(function (state, props) {
+	    return {};
+	}, function (dispatch, props) {
+	    return {};
+	})(GameObject);
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(194);
+	
+	var _withTypes = __webpack_require__(214);
 	
 	var _withTypes2 = _interopRequireDefault(_withTypes);
 	
@@ -23760,29 +23961,29 @@
 	exports.default = (0, _reactRedux.connect)(function (state, props) {
 	    return {
 	        angle: state.character.angle,
-	        moving: state.direction.U || state.direction.D || state.direction.L || state.direction.R
+	        moving: state.direction.x != 0 || state.direction.y != 0
 	    };
 	}, function (dispatch, props) {
 	    return {};
 	})(Character);
 
 /***/ },
-/* 215 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "character.916f97dfd920bbbb12b58b23613fcd95.png";
 
 /***/ },
-/* 216 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(217);
+	var content = __webpack_require__(220);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(221)(content, {});
+	var update = __webpack_require__(224)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -23799,21 +24000,21 @@
 	}
 
 /***/ },
-/* 217 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(218)();
+	exports = module.exports = __webpack_require__(221)();
 	// imports
 	
 	
 	// module
-	exports.push([module.id, "body {\n  background: #000;\n  margin: 0;\n}\n.hidden {\n  display: none;\n}\n.game {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n}\n.game-border {\n  position: absolute;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n  background: transparent;\n  border: 8px solid #fff;\n  border-radius: 16px;\n  pointer-events: none;\n}\n.world {\n  position: absolute;\n  left: 8px;\n  top: 8px;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n}\n.world .scrolling-bg {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-image: url(" + __webpack_require__(219) + ");\n}\n.world .scrolling-bg.dark {\n  background-image: url(" + __webpack_require__(220) + ");\n  animation: contrastCycle 5.5s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95), fadeCycle 3.9s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);\n}\n@-moz-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-webkit-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-o-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-moz-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@-webkit-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@-o-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n.character {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n}\n.character .character-sprite {\n  position: absolute;\n  transform: translate3d(-50%, -50%, 0);\n}\n.character.moving .character-sprite {\n  animation: bobbing 0.4s infinite linear;\n}\n.character.moving .character-sprite.trail1 {\n  animation-delay: 0.03s;\n  transform: translate3d(-60%, -50%, 0);\n  opacity: 0.8;\n}\n.character.moving .character-sprite.trail2 {\n  animation-delay: 0.06s;\n  transform: translate3d(-70%, -50%, 0);\n  opacity: 0.6;\n}\n.character.moving .character-sprite.trail3 {\n  animation-delay: 0.09s;\n  transform: translate3d(-80%, -50%, 0);\n  opacity: 0.4;\n}\n.character.moving .character-sprite.trail4 {\n  animation-delay: 0.12s;\n  transform: translate3d(-90%, -50%, 0);\n  opacity: 0.2;\n}\n.character.moving .character-sprite.trail5 {\n  animation-delay: 0.15s;\n  transform: translate3d(-100%, -50%, 0);\n  opacity: 0;\n}\n.character.moving .character-sprite.trail6 {\n  animation-delay: 0.18s;\n  transform: translate3d(-110%, -50%, 0);\n  opacity: -0.2;\n}\n.character.moving .character-sprite.trail7 {\n  animation-delay: 0.21s;\n  transform: translate3d(-120%, -50%, 0);\n  opacity: -0.4;\n}\n@-moz-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@-webkit-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@-o-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n", ""]);
+	exports.push([module.id, "body {\n  background: #000;\n  margin: 0;\n}\n.hidden {\n  display: none;\n}\n.game {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n}\n.game-border {\n  position: fixed;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n  background: transparent;\n  border: 8px solid #fff;\n  border-radius: 16px;\n  pointer-events: none;\n}\n.world {\n  position: fixed;\n  left: 8px;\n  top: 8px;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n}\n.world .scrolling-bg {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  background-image: url(" + __webpack_require__(222) + ");\n}\n.world .scrolling-bg.dark {\n  background-image: url(" + __webpack_require__(223) + ");\n  animation: contrastCycle 5.5s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95), fadeCycle 3.9s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);\n}\n@-moz-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-webkit-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-o-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-moz-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@-webkit-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@-o-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n.go {\n  position: fixed;\n}\n.go .go-sprite {\n  transform: translate3d(-50%, -50%, 0);\n}\n.go .go-sprite.pulseAndSway {\n  animation: pulseAndSway 1.2s infinite linear;\n}\n@-moz-keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n@-webkit-keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n@-o-keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n@keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n.character {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n}\n.character .character-sprite {\n  position: fixed;\n  transform: translate3d(-50%, -50%, 0);\n}\n.character.moving .character-sprite {\n  animation: bobbing 0.4s infinite linear;\n}\n.character.moving .character-sprite.trail1 {\n  animation-delay: 0.03s;\n  transform: translate3d(-60%, -50%, 0);\n  opacity: 0.8;\n}\n.character.moving .character-sprite.trail2 {\n  animation-delay: 0.06s;\n  transform: translate3d(-70%, -50%, 0);\n  opacity: 0.6;\n}\n.character.moving .character-sprite.trail3 {\n  animation-delay: 0.09s;\n  transform: translate3d(-80%, -50%, 0);\n  opacity: 0.4;\n}\n.character.moving .character-sprite.trail4 {\n  animation-delay: 0.12s;\n  transform: translate3d(-90%, -50%, 0);\n  opacity: 0.2;\n}\n.character.moving .character-sprite.trail5 {\n  animation-delay: 0.15s;\n  transform: translate3d(-100%, -50%, 0);\n  opacity: 0;\n}\n.character.moving .character-sprite.trail6 {\n  animation-delay: 0.18s;\n  transform: translate3d(-110%, -50%, 0);\n  opacity: -0.2;\n}\n.character.moving .character-sprite.trail7 {\n  animation-delay: 0.21s;\n  transform: translate3d(-120%, -50%, 0);\n  opacity: -0.4;\n}\n@-moz-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@-webkit-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@-o-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 218 */
+/* 221 */
 /***/ function(module, exports) {
 
 	/*
@@ -23869,19 +24070,19 @@
 
 
 /***/ },
-/* 219 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "grasstile.3d974594f91ec584844e133e1f69d6a7.png";
 
 /***/ },
-/* 220 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "grasstiledark.9d0f664e7b8167e274cfaa5f9f6d7019.png";
 
 /***/ },
-/* 221 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
