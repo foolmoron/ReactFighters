@@ -7,10 +7,11 @@ const GameObject = withTypes({
     posX: React.PropTypes.number,
     posY: React.PropTypes.number,
     extraClasses: React.PropTypes.arrayOf(React.PropTypes.string),
-}, ({ sprite, posX, posY, extraClasses }) => {
+}, ({ sprite, posX, posY, extraClasses, children }) => {
     return (
         <div className="go" style={{ transform: `translate3d(${posX}px, ${posY}px, 0)`}}>
             <img className={['go-sprite'].concat(extraClasses).join(' ')} src={sprite} />
+            {children}
         </div>
     );
 });

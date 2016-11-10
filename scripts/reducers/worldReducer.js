@@ -1,9 +1,36 @@
 import { UPDATE, OBJECT_ADD } from '../actions';
 import gemSprite from '../../sprites/gem.png';
 
-var initialObjects = [];
+var initialTree = [{
+    id: 0,
+    name: 'root',
+    parent: null,
+    children: [],
+    sprite: null,
+    posX: 0,
+    posY: 0,
+    extraClasses: [],
+}];
 for (var i = 0; i < 10; i++) {
-    initialObjects.push({ 
+    initialTree[0].children.push(i + 1);
+    initialTree.push({
+        id: i + 1,
+        name: 'gem' + i,
+        parent: 0,
+        children: [],
+        sprite: gemSprite,
+        posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+        posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+        extraClasses: ['pulseAndSway'],
+    });
+}
+for (var i = 10; i < 13; i++) {
+    initialTree[3].children.push(i + 1);
+    initialTree.push({
+        id: i + 1,
+        name: 'gem' + i,
+        parent: 3,
+        children: [],
         sprite: gemSprite,
         posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
         posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
@@ -19,13 +46,22 @@ export default (state = {
     accelX: 0,
     accelY: 0,
     speed: 500,
-    gameObjects: initialObjects,
+    objectTree: initialTree,
 }, action, fullState) => {
     switch (action.type) {
         case OBJECT_ADD:
-            var { gameObjects } = state;
-            gameObjects.push({ id: gameObjects.length + 1, sprite: action.sprite, posX: action.posX, posY: action.posY, extraClasses: action.extraClasses });
-            return Object.assign({}, state, { gameObjects });
+            var { objectTree } = state;
+            objectTree.push({ 
+                id: objectTree.length + 1,
+                name: action.name,
+                parent: action.parent || 0, // root is the default parent
+                children: action.children || [],
+                sprite: action.sprite,
+                posX: action.posX,
+                posY: action.posY,
+                extraClasses: action.extraClasses || [],
+            });
+            return Object.assign({}, state, { objectTree });
         case UPDATE:
             var dt = action.dt;
             var { posX, posY, velX, velY, accelX, accelY, speed } = state;
