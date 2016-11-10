@@ -50,7 +50,7 @@
 	
 	var _Game2 = _interopRequireDefault(_Game);
 	
-	__webpack_require__(219);
+	__webpack_require__(221);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -82,33 +82,43 @@
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
 	
-	var _KeyInputContainer = __webpack_require__(210);
+	var _actions = __webpack_require__(205);
+	
+	var _KeyInputContainer = __webpack_require__(211);
 	
 	var _KeyInputContainer2 = _interopRequireDefault(_KeyInputContainer);
 	
-	var _MouseInputContainer = __webpack_require__(211);
+	var _MouseInputContainer = __webpack_require__(212);
 	
 	var _MouseInputContainer2 = _interopRequireDefault(_MouseInputContainer);
 	
-	var _UpdateContainer = __webpack_require__(212);
+	var _UpdateContainer = __webpack_require__(213);
 	
 	var _UpdateContainer2 = _interopRequireDefault(_UpdateContainer);
 	
-	var _GameBorder = __webpack_require__(213);
+	var _GameBorder = __webpack_require__(214);
 	
 	var _GameBorder2 = _interopRequireDefault(_GameBorder);
 	
-	var _World = __webpack_require__(215);
+	var _World = __webpack_require__(216);
 	
 	var _World2 = _interopRequireDefault(_World);
 	
-	var _Character = __webpack_require__(217);
+	var _Character = __webpack_require__(218);
 	
 	var _Character2 = _interopRequireDefault(_Character);
 	
-	var _character = __webpack_require__(218);
+	var _UI = __webpack_require__(219);
+	
+	var _UI2 = _interopRequireDefault(_UI);
+	
+	var _character = __webpack_require__(220);
 	
 	var _character2 = _interopRequireDefault(_character);
+	
+	var _gem = __webpack_require__(208);
+	
+	var _gem2 = _interopRequireDefault(_gem);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -148,6 +158,7 @@
 	                ),
 	                _react2.default.createElement(_World2.default, null),
 	                _react2.default.createElement(_Character2.default, { sprite: _character2.default }),
+	                _react2.default.createElement(_UI2.default, null),
 	                _react2.default.createElement(_GameBorder2.default, null)
 	            );
 	        }
@@ -166,6 +177,31 @@
 	    { store: store },
 	    _react2.default.createElement(Game, null)
 	), document.getElementById('root'));
+	
+	for (var i = 0; i < 10; i++) {
+	    store.dispatch({
+	        type: _actions.OBJECT_ADD,
+	        id: i + 1,
+	        name: 'gem' + i,
+	        parent: 0,
+	        sprite: _gem2.default,
+	        posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+	        posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+	        extraClasses: ['pulseAndSway']
+	    });
+	}
+	for (var i = 10; i < 13; i++) {
+	    store.dispatch({
+	        type: _actions.OBJECT_ADD,
+	        id: i + 1,
+	        name: 'gem' + i,
+	        parent: 3,
+	        sprite: _gem2.default,
+	        posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+	        posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+	        extraClasses: ['pulseAndSway']
+	    });
+	}
 	
 	exports.default = Game;
 
@@ -23303,6 +23339,10 @@
 	
 	var _characterReducer2 = _interopRequireDefault(_characterReducer);
 	
+	var _uiReducer = __webpack_require__(210);
+	
+	var _uiReducer2 = _interopRequireDefault(_uiReducer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// combine reducers in a custom way to pass an extra 3rd parameter that contains the entire state
@@ -23313,7 +23353,8 @@
 	    return {
 	        direction: (0, _directionReducer2.default)(state.direction, action, state),
 	        world: (0, _worldReducer2.default)(state.world, action, state),
-	        character: (0, _characterReducer2.default)(state.character, action, state)
+	        character: (0, _characterReducer2.default)(state.character, action, state),
+	        ui: (0, _uiReducer2.default)(state.ui, action, state)
 	    };
 	};
 
@@ -23341,7 +23382,9 @@
 	        R: false,
 	        M: false,
 	        x: 0,
-	        y: 0
+	        y: 0,
+	        lastX: 0,
+	        lastY: 0
 	    };
 	    var action = arguments[1];
 	    var fullState = arguments[2];
@@ -23354,7 +23397,9 @@
 	                L = state.L,
 	                R = state.R,
 	                x = state.x,
-	                y = state.y;
+	                y = state.y,
+	                lastX = state.lastX,
+	                lastY = state.lastY;
 	            // direction bools
 	
 	            if (action.key == 'KeyW' || action.key == 'ArrowUp') {
@@ -23371,14 +23416,19 @@
 	            }
 	            // direction vector2
 	
+	            var _normalize = (0, _vector.normalize)([L ? -1 : R ? 1 : 0, U ? -1 : D ? 1 : 0]),
+	                _normalize2 = _slicedToArray(_normalize, 2),
+	                x = _normalize2[0],
+	                y = _normalize2[1];
+	            // last non-zero direction
+	
+	
+	            if (x != 0 || y != 0) {
+	                lastX = x;
+	                lastY = y;
+	            }
 	            // return new state
-	            var _normalize = (0, _vector.normalize)([L ? -1 : R ? 1 : 0, U ? -1 : D ? 1 : 0]);
-	
-	            var _normalize2 = _slicedToArray(_normalize, 2);
-	
-	            x = _normalize2[0];
-	            y = _normalize2[1];
-	            return Object.assign({}, state, { U: U, D: D, L: L, R: R, x: x, y: y });
+	            return Object.assign({}, state, { U: U, D: D, L: L, R: R, x: x, y: y, lastX: lastX, lastY: lastY });
 	        case _actions.MOUSE_UP:
 	            // disable movement
 	            return Object.assign({}, state, { x: 0, y: 0, M: false });
@@ -23386,6 +23436,8 @@
 	        case _actions.MOUSE_MOVE:
 	            var x = state.x,
 	                y = state.y,
+	                lastX = state.lastX,
+	                lastY = state.lastY,
 	                M = state.M;
 	            // mouse bool
 	
@@ -23403,8 +23455,13 @@
 	                x = _normalize4[0];
 	                y = _normalize4[1];
 	            }
+	            // last non-zero direction
+	            if (x != 0 || y != 0) {
+	                lastX = x;
+	                lastY = y;
+	            }
 	            // return new state
-	            return Object.assign({}, state, { x: x, y: y, M: M });
+	            return Object.assign({}, state, { x: x, y: y, lastX: lastX, lastY: lastY, M: M });
 	        default:
 	            return state;
 	    }
@@ -23464,16 +23521,6 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var initialObjects = [];
-	for (var i = 0; i < 10; i++) {
-	    initialObjects.push({
-	        sprite: _gem2.default,
-	        posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
-	        posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
-	        extraClasses: ['pulseAndSway']
-	    });
-	}
-	
 	exports.default = function () {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
 	        posX: 0,
@@ -23483,17 +23530,37 @@
 	        accelX: 0,
 	        accelY: 0,
 	        speed: 500,
-	        gameObjects: initialObjects
+	        objectTree: [{
+	            index: 0,
+	            name: 'root',
+	            parent: null,
+	            children: [],
+	            sprite: null,
+	            posX: 0,
+	            posY: 0,
+	            extraClasses: []
+	        }]
 	    };
 	    var action = arguments[1];
 	    var fullState = arguments[2];
 	
 	    switch (action.type) {
 	        case _actions.OBJECT_ADD:
-	            var gameObjects = state.gameObjects;
+	            var objectTree = state.objectTree;
 	
-	            gameObjects.push({ id: gameObjects.length + 1, sprite: action.sprite, posX: action.posX, posY: action.posY, extraClasses: action.extraClasses });
-	            return Object.assign({}, state, { gameObjects: gameObjects });
+	            var node = {
+	                index: objectTree.length,
+	                name: action.name,
+	                parent: action.parent || 0, // root is the default parent
+	                children: action.children || [],
+	                sprite: action.sprite,
+	                posX: action.posX,
+	                posY: action.posY,
+	                extraClasses: action.extraClasses || []
+	            };
+	            objectTree[action.parent].children = objectTree[action.parent].children.concat(node.index);
+	            objectTree = objectTree.concat(node);
+	            return Object.assign({}, state, { objectTree: objectTree });
 	        case _actions.UPDATE:
 	            var dt = action.dt;
 	            var posX = state.posX,
@@ -23544,7 +23611,7 @@
 	
 	    switch (action.type) {
 	        case _actions.UPDATE:
-	            return Object.assign({}, state, { angle: Math.atan2(fullState.direction.y, fullState.direction.x) * 180 / Math.PI });
+	            return Object.assign({}, state, { angle: Math.atan2(fullState.direction.lastY, fullState.direction.lastX) * 180 / Math.PI });
 	        default:
 	            return state;
 	    }
@@ -23552,6 +23619,37 @@
 
 /***/ },
 /* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	__webpack_require__(205);
+	
+	exports.default = function () {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+	        buttons: [{
+	            text: 'Test1'
+	        }, {
+	            text: 'Longer test right here'
+	        }, {
+	            text: 'Z'
+	        }]
+	    };
+	    var action = arguments[1];
+	    var fullState = arguments[2];
+	
+	    switch (action.type) {
+	        default:
+	            return state;
+	    }
+	};
+
+/***/ },
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23617,7 +23715,7 @@
 	module.exports = (0, _reactRedux.connect)()(KeyInputContainer);
 
 /***/ },
-/* 211 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23693,7 +23791,7 @@
 	module.exports = (0, _reactRedux.connect)()(MouseInputContainer);
 
 /***/ },
-/* 212 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23767,7 +23865,7 @@
 	module.exports = (0, _reactRedux.connect)()(UpdateContainer);
 
 /***/ },
-/* 213 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23782,7 +23880,7 @@
 	
 	var _reactRedux = __webpack_require__(194);
 	
-	var _withTypes = __webpack_require__(214);
+	var _withTypes = __webpack_require__(215);
 	
 	var _withTypes2 = _interopRequireDefault(_withTypes);
 	
@@ -23803,7 +23901,7 @@
 	})(GameBorder);
 
 /***/ },
-/* 214 */
+/* 215 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -23816,61 +23914,6 @@
 	    component.propTypes = propTypes;
 	    return component;
 	}
-
-/***/ },
-/* 215 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(194);
-	
-	var _withTypes = __webpack_require__(214);
-	
-	var _withTypes2 = _interopRequireDefault(_withTypes);
-	
-	var _GameObject = __webpack_require__(216);
-	
-	var _GameObject2 = _interopRequireDefault(_GameObject);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var World = (0, _withTypes2.default)({
-	    posX: _react2.default.PropTypes.number,
-	    posY: _react2.default.PropTypes.number
-	}, function (_ref) {
-	    var posX = _ref.posX,
-	        posY = _ref.posY,
-	        gameObjects = _ref.gameObjects;
-	
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'world' },
-	        _react2.default.createElement('div', { className: 'scrolling-bg', style: { backgroundPositionX: -posX, backgroundPositionY: -posY } }),
-	        _react2.default.createElement('div', { className: 'scrolling-bg dark', style: { backgroundPositionX: -(posX + 24), backgroundPositionY: -(posY + 24) } }),
-	        gameObjects.map(function (obj, i) {
-	            return _react2.default.createElement(_GameObject2.default, { key: i, sprite: obj.sprite, posX: obj.posX - posX, posY: obj.posY - posY, extraClasses: obj.extraClasses });
-	        })
-	    );
-	});
-	
-	exports.default = (0, _reactRedux.connect)(function (state, props) {
-	    return {
-	        posX: state.world.posX,
-	        posY: state.world.posY,
-	        gameObjects: state.world.gameObjects
-	    };
-	}, function (dispatch, props) {
-	    return {};
-	})(World);
 
 /***/ },
 /* 216 */
@@ -23888,35 +23931,55 @@
 	
 	var _reactRedux = __webpack_require__(194);
 	
-	var _withTypes = __webpack_require__(214);
+	var _withTypes = __webpack_require__(215);
 	
 	var _withTypes2 = _interopRequireDefault(_withTypes);
 	
+	var _GameObject = __webpack_require__(217);
+	
+	var _GameObject2 = _interopRequireDefault(_GameObject);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var GameObject = (0, _withTypes2.default)({
-	    sprite: _react2.default.PropTypes.string,
+	var World = (0, _withTypes2.default)({
 	    posX: _react2.default.PropTypes.number,
-	    posY: _react2.default.PropTypes.number,
-	    extraClasses: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string)
+	    posY: _react2.default.PropTypes.number
 	}, function (_ref) {
-	    var sprite = _ref.sprite,
-	        posX = _ref.posX,
+	    var posX = _ref.posX,
 	        posY = _ref.posY,
-	        extraClasses = _ref.extraClasses;
+	        objectTree = _ref.objectTree;
 	
+	    function tree(nodeIndex) {
+	        var node = objectTree[nodeIndex];
+	        return _react2.default.createElement(
+	            _GameObject2.default,
+	            { key: node.index, sprite: node.sprite, posX: node.posX, posY: node.posY, extraClasses: node.extraClasses },
+	            node.children.map(tree)
+	        );
+	    }
+	    var rootNode = objectTree[0];
 	    return _react2.default.createElement(
 	        'div',
-	        { className: 'go', style: { transform: 'translate3d(' + posX + 'px, ' + posY + 'px, 0)' } },
-	        _react2.default.createElement('img', { className: ['go-sprite'].concat(extraClasses).join(' '), src: sprite })
+	        { className: 'world' },
+	        _react2.default.createElement('div', { className: 'scrolling-bg', style: { backgroundPositionX: -posX, backgroundPositionY: -posY } }),
+	        _react2.default.createElement('div', { className: 'scrolling-bg dark', style: { backgroundPositionX: -(posX + 24), backgroundPositionY: -(posY + 24) } }),
+	        _react2.default.createElement(
+	            _GameObject2.default,
+	            { key: rootNode.index, sprite: rootNode.sprite, posX: rootNode.posX - posX, posY: rootNode.posY - posY, extraClasses: rootNode.extraClasses },
+	            rootNode.children.map(tree)
+	        )
 	    );
 	});
 	
 	exports.default = (0, _reactRedux.connect)(function (state, props) {
-	    return {};
+	    return {
+	        posX: state.world.posX,
+	        posY: state.world.posY,
+	        objectTree: state.world.objectTree
+	    };
 	}, function (dispatch, props) {
 	    return {};
-	})(GameObject);
+	})(World);
 
 /***/ },
 /* 217 */
@@ -23934,7 +23997,55 @@
 	
 	var _reactRedux = __webpack_require__(194);
 	
-	var _withTypes = __webpack_require__(214);
+	var _withTypes = __webpack_require__(215);
+	
+	var _withTypes2 = _interopRequireDefault(_withTypes);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var GameObject = (0, _withTypes2.default)({
+	    sprite: _react2.default.PropTypes.string,
+	    posX: _react2.default.PropTypes.number,
+	    posY: _react2.default.PropTypes.number,
+	    extraClasses: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string)
+	}, function (_ref) {
+	    var sprite = _ref.sprite,
+	        posX = _ref.posX,
+	        posY = _ref.posY,
+	        extraClasses = _ref.extraClasses,
+	        children = _ref.children;
+	
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'go', style: { transform: 'translate3d(' + posX + 'px, ' + posY + 'px, 0)' } },
+	        _react2.default.createElement('img', { className: ['go-sprite'].concat(extraClasses).join(' '), src: sprite }),
+	        children
+	    );
+	});
+	
+	exports.default = (0, _reactRedux.connect)(function (state, props) {
+	    return {};
+	}, function (dispatch, props) {
+	    return {};
+	})(GameObject);
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(194);
+	
+	var _withTypes = __webpack_require__(215);
 	
 	var _withTypes2 = _interopRequireDefault(_withTypes);
 	
@@ -23968,22 +24079,78 @@
 	})(Character);
 
 /***/ },
-/* 218 */
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(194);
+	
+	var _withTypes = __webpack_require__(215);
+	
+	var _withTypes2 = _interopRequireDefault(_withTypes);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var UI = (0, _withTypes2.default)({}, function (_ref) {
+	    var buttons = _ref.buttons;
+	
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'ui' },
+	        _react2.default.createElement(
+	            'span',
+	            null,
+	            'React Fighters'
+	        ),
+	        _react2.default.createElement(
+	            'span',
+	            null,
+	            ' by foolmoron'
+	        ),
+	        buttons.map(function (button, i) {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'ui-button', key: i },
+	                button.text
+	            );
+	        })
+	    );
+	});
+	
+	exports.default = (0, _reactRedux.connect)(function (state, props) {
+	    return {
+	        buttons: state.ui.buttons
+	    };
+	}, function (dispatch, props) {
+	    return {};
+	})(UI);
+
+/***/ },
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "character.916f97dfd920bbbb12b58b23613fcd95.png";
 
 /***/ },
-/* 219 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(220);
+	var content = __webpack_require__(222);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(224)(content, {});
+	var update = __webpack_require__(226)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -24000,21 +24167,21 @@
 	}
 
 /***/ },
-/* 220 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(221)();
+	exports = module.exports = __webpack_require__(223)();
 	// imports
-	
+	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Press+Start+2P);", ""]);
 	
 	// module
-	exports.push([module.id, "body {\n  background: #000;\n  margin: 0;\n}\n.hidden {\n  display: none;\n}\n.game {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n}\n.game-border {\n  position: fixed;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n  background: transparent;\n  border: 8px solid #fff;\n  border-radius: 16px;\n  pointer-events: none;\n}\n.world {\n  position: fixed;\n  left: 8px;\n  top: 8px;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n}\n.world .scrolling-bg {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  background-image: url(" + __webpack_require__(222) + ");\n}\n.world .scrolling-bg.dark {\n  background-image: url(" + __webpack_require__(223) + ");\n  animation: contrastCycle 5.5s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95), fadeCycle 3.9s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);\n}\n@-moz-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-webkit-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-o-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-moz-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@-webkit-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@-o-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n.go {\n  position: fixed;\n}\n.go .go-sprite {\n  transform: translate3d(-50%, -50%, 0);\n}\n.go .go-sprite.pulseAndSway {\n  animation: pulseAndSway 1.2s infinite linear;\n}\n@-moz-keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n@-webkit-keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n@-o-keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n@keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n.character {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n}\n.character .character-sprite {\n  position: fixed;\n  transform: translate3d(-50%, -50%, 0);\n}\n.character.moving .character-sprite {\n  animation: bobbing 0.4s infinite linear;\n}\n.character.moving .character-sprite.trail1 {\n  animation-delay: 0.03s;\n  transform: translate3d(-60%, -50%, 0);\n  opacity: 0.8;\n}\n.character.moving .character-sprite.trail2 {\n  animation-delay: 0.06s;\n  transform: translate3d(-70%, -50%, 0);\n  opacity: 0.6;\n}\n.character.moving .character-sprite.trail3 {\n  animation-delay: 0.09s;\n  transform: translate3d(-80%, -50%, 0);\n  opacity: 0.4;\n}\n.character.moving .character-sprite.trail4 {\n  animation-delay: 0.12s;\n  transform: translate3d(-90%, -50%, 0);\n  opacity: 0.2;\n}\n.character.moving .character-sprite.trail5 {\n  animation-delay: 0.15s;\n  transform: translate3d(-100%, -50%, 0);\n  opacity: 0;\n}\n.character.moving .character-sprite.trail6 {\n  animation-delay: 0.18s;\n  transform: translate3d(-110%, -50%, 0);\n  opacity: -0.2;\n}\n.character.moving .character-sprite.trail7 {\n  animation-delay: 0.21s;\n  transform: translate3d(-120%, -50%, 0);\n  opacity: -0.4;\n}\n@-moz-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@-webkit-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@-o-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n", ""]);
+	exports.push([module.id, "* {\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -o-user-select: none;\n  user-select: none;\n  -webkit-user-drag: none;\n  -khtml-user-drag: none;\n  -moz-user-drag: none;\n  -o-user-drag: none;\n  user-drag: none;\n}\nbody {\n  background: #000;\n  margin: 0;\n}\n.hidden {\n  display: none;\n}\n.game {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n}\n.game-border {\n  position: fixed;\n  width: calc(100% - 16px);\n  height: calc(76% - 16px);\n  background: transparent;\n  border: 8px solid #fff;\n  border-radius: 16px;\n  pointer-events: none;\n}\n.world {\n  position: fixed;\n  left: 8px;\n  top: 8px;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n}\n.world .scrolling-bg {\n  position: fixed;\n  width: calc(100% - 16px);\n  height: calc(100% - 16px);\n  background-image: url(" + __webpack_require__(224) + ");\n}\n.world .scrolling-bg.dark {\n  background-image: url(" + __webpack_require__(225) + ");\n  animation: contrastCycle 5.5s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95), fadeCycle 3.9s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);\n}\n@-moz-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-webkit-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-o-keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@keyframes contrastCycle {\n  0%, 100% {\n    filter: contrast(0.8);\n  }\n  50% {\n    filter: contrast(1.8);\n  }\n}\n@-moz-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@-webkit-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@-o-keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n@keyframes fadeCycle {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0.7;\n  }\n}\n.go {\n  position: fixed;\n}\n.go .go-sprite {\n  transform: translate3d(-50%, -50%, 0);\n}\n.go .go-sprite.pulseAndSway {\n  animation: pulseAndSway 1.2s infinite linear;\n}\n@-moz-keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n@-webkit-keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n@-o-keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n@keyframes pulseAndSway {\n  0% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n  25% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(-18deg);\n  }\n  50% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.4, 1.4, 1.4) rotateZ(0deg);\n  }\n  75% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1.2, 1.2, 1.2) rotateZ(18deg);\n  }\n  100% {\n    transform: translate3d(-50%, -50%, 0) scale3d(1, 1, 1) rotateZ(0deg);\n  }\n}\n.character {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n}\n.character .character-sprite {\n  position: fixed;\n  transform: translate3d(-50%, -50%, 0);\n}\n.character.moving .character-sprite {\n  animation: bobbing 0.4s infinite linear;\n}\n.character.moving .character-sprite.trail1 {\n  animation-delay: 0.03s;\n  transform: translate3d(-60%, -50%, 0);\n  opacity: 0.8;\n}\n.character.moving .character-sprite.trail2 {\n  animation-delay: 0.06s;\n  transform: translate3d(-70%, -50%, 0);\n  opacity: 0.6;\n}\n.character.moving .character-sprite.trail3 {\n  animation-delay: 0.09s;\n  transform: translate3d(-80%, -50%, 0);\n  opacity: 0.4;\n}\n.character.moving .character-sprite.trail4 {\n  animation-delay: 0.12s;\n  transform: translate3d(-90%, -50%, 0);\n  opacity: 0.2;\n}\n.character.moving .character-sprite.trail5 {\n  animation-delay: 0.15s;\n  transform: translate3d(-100%, -50%, 0);\n  opacity: 0;\n}\n.character.moving .character-sprite.trail6 {\n  animation-delay: 0.18s;\n  transform: translate3d(-110%, -50%, 0);\n  opacity: -0.2;\n}\n.character.moving .character-sprite.trail7 {\n  animation-delay: 0.21s;\n  transform: translate3d(-120%, -50%, 0);\n  opacity: -0.4;\n}\n@-moz-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@-webkit-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@-o-keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n@keyframes bobbing {\n  0%, 100% {\n    top: 50%;\n    left: 50%;\n  }\n  12% {\n    left: calc(50% - 2px);\n  }\n  25% {\n    top: calc(50% - 5px);\n    left: 50%;\n  }\n  37% {\n    left: calc(50% + 2px);\n  }\n  50% {\n    top: 50%;\n    left: 50%;\n  }\n  62% {\n    left: calc(50% - 2px);\n  }\n  75% {\n    top: calc(50% + 5px);\n    left: 50%;\n  }\n  88% {\n    left: calc(50% + 2px);\n  }\n}\n.ui {\n  position: fixed;\n  bottom: 0;\n  width: calc(100% - 26px);\n  height: calc(23% - 10px);\n  padding: 5px;\n  background-color: #000;\n  border: 8px solid #fff;\n  border-radius: 16px;\n  color: #fff;\n  font-family: 'Press Start 2P', cursive;\n}\n.ui .ui-button {\n  display: table;\n  margin-top: 9px;\n  padding: 10px;\n  border: 4px solid transparent;\n  cursor: pointer;\n}\n.ui .ui-button:hover {\n  border-color: #fff;\n}\n", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 221 */
+/* 223 */
 /***/ function(module, exports) {
 
 	/*
@@ -24070,19 +24237,19 @@
 
 
 /***/ },
-/* 222 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "grasstile.3d974594f91ec584844e133e1f69d6a7.png";
 
 /***/ },
-/* 223 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "grasstiledark.9d0f664e7b8167e274cfaa5f9f6d7019.png";
 
 /***/ },
-/* 224 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
