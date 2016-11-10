@@ -5,6 +5,8 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducers from './reducers';
 
+import { OBJECT_ADD } from './actions';
+
 import KeyInputContainer from './containers/KeyInputContainer.jsx';
 import MouseInputContainer from './containers/MouseInputContainer.jsx';
 import UpdateContainer from './containers/UpdateContainer.jsx';
@@ -14,6 +16,7 @@ import World from './components/World.jsx';
 import Character from './components/Character.jsx';
 
 import characterSprite from '../sprites/character.png';
+import gemSprite from '../sprites/gem.png';
 
 class Game extends React.Component {
     static propTypes = {};
@@ -51,5 +54,31 @@ ReactDOM.render(
         <Game />
     </Provider>, document.getElementById('root')
 );
+
+
+for (var i = 0; i < 10; i++) {
+    store.dispatch({
+        type: OBJECT_ADD,
+        id: i + 1,
+        name: 'gem' + i,
+        parent: 0,
+        sprite: gemSprite,
+        posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+        posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+        extraClasses: ['pulseAndSway'],
+    });
+}
+for (var i = 10; i < 13; i++) {
+    store.dispatch({
+        type: OBJECT_ADD,
+        id: i + 1,
+        name: 'gem' + i,
+        parent: 3,
+        sprite: gemSprite,
+        posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+        posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+        extraClasses: ['pulseAndSway'],
+    });
+}
 
 export default Game;
