@@ -6,7 +6,7 @@
 .game-border
     position: fixed
     width: gameSize
-    height: gameSize
+    height: 'calc(%s - %s)' % ((99% - uiSize) (2*gameBorderSize))
     background: transparent
     border: gameBorderSize solid white
     border-radius: 16px

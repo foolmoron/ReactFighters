@@ -14,6 +14,7 @@ import UpdateContainer from './containers/UpdateContainer.jsx';
 import GameBorder from './components/GameBorder.jsx';
 import World from './components/World.jsx';
 import Character from './components/Character.jsx';
+import UI from './components/UI.jsx';
 
 import characterSprite from '../sprites/character.png';
 import gemSprite from '../sprites/gem.png';
@@ -42,6 +43,7 @@ class Game extends React.Component {
                 </div>
                 <World />
                 <Character sprite={characterSprite} />
+                <UI />
                 <GameBorder />
             </div>
         );
