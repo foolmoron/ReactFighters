@@ -21,13 +21,15 @@ class MouseInputContainer extends React.Component {
     }
 
     _onMouseDown = (e) => {
-        this.props.dispatch({ type: MOUSE_DOWN, mouseX: e.clientX, mouseY: e.clientY });
+        var mouse = e.touches ? e.touches[0] : e;
+        this.props.dispatch({ type: MOUSE_DOWN, mouseX: mouse.clientX, mouseY: mouse.clientY });
     }
     _onMouseMove = (e) => {
-        this.props.dispatch({ type: MOUSE_MOVE, mouseX: e.clientX, mouseY: e.clientY });
+        var mouse = e.touches ? e.touches[0] : e;
+        this.props.dispatch({ type: MOUSE_MOVE, mouseX: mouse.clientX, mouseY: mouse.clientY });
     }
     _onMouseUp = (e) => {
-        this.props.dispatch({ type: MOUSE_UP, mouseX: e.clientX, mouseY: e.clientY });
+        this.props.dispatch({ type: MOUSE_UP });
     }
 
     render = () => <div className="mouse-input-container"></div>;
