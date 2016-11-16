@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import withTypes from '../lib/withTypes.js';
 
 const UI = withTypes({
-}, ({ buttons }) => {
+}, ({ buttons, gems }) => {
     return (
         <div className="ui">
-            <span>React Fighters</span><span> by foolmoron</span>
+            <span>React Fighters</span><span> by foolmoron</span><span style={{float: 'right'}}>Gems: {gems}</span>
             <div className="ui-buttons">
                 {
                     buttons
@@ -20,6 +20,7 @@ const UI = withTypes({
 export default connect(
     (state, props) => ({
         buttons: state.ui.buttons,
+        gems: state.stats.gems,
     }), 
     (dispatch, props) => ({
     })

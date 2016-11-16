@@ -10,7 +10,7 @@ const World = withTypes({
 }, ({ posX, posY, objectTree }) => {
     function tree(nodeIndex) {
         var node = objectTree[nodeIndex];
-        return <GameObject key={node.index} sprite={node.sprite} posX={node.posX} posY={node.posY} extraClasses={node.extraClasses}>
+        return <GameObject key={node.index} sprite={node.sprite} posX={node.posX} posY={node.posY} extraClasses={node.extraClasses.concat(node.active ? null : 'hidden')}>
             {node.children.map(tree)}
         </GameObject>
     }

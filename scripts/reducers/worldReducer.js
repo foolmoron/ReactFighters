@@ -1,4 +1,5 @@
-import { UPDATE, OBJECT_ADD } from '../actions';
+import { UPDATE, OBJECT_ADD, COLLECT_GEM } from '../actions';
+import { magnitude } from '../lib/vector2.js';
 import gemSprite from '../../sprites/gem.png';
 
 export default (state = {
@@ -11,7 +12,9 @@ export default (state = {
     speed: 500,
     objectTree: [{
         index: 0,
+        active: true,
         name: 'root',
+        layer: null,
         parent: null,
         children: [],
         sprite: null,
@@ -25,7 +28,9 @@ export default (state = {
             var { objectTree } = state;
             var node = { 
                 index: objectTree.length,
+                active: action.active || true,
                 name: action.name,
+                layer: action.layer,
                 parent: action.parent || 0, // root is the default parent
                 children: action.children || [],
                 sprite: action.sprite,
@@ -38,15 +43,41 @@ export default (state = {
             return Object.assign({}, state, { objectTree });
         case UPDATE:
             var dt = action.dt;
-            var { posX, posY, velX, velY, accelX, accelY, speed } = state;
-            velX = fullState.direction.x * speed;
-            velY = fullState.direction.y * speed;
-            // velX += accelX * dt;
-            // velY += accelY * dt;
-            posX += velX * dt;
-            posY += velY * dt;
+            var { posX, posY, velX, velY, accelX, accelY, speed, objectTree } = state;
+            objectTree = objectTree.slice();
+            // character motion
+            {
+                velX = fullState.direction.x * speed;
+                velY = fullState.direction.y * speed;
+                // velX += accelX * dt;
+                // velY += accelY * dt;
+                posX += velX * dt;
+                posY += velY * dt;
+            }
+            // collisions
+            {
+                for (var a = 0; a < objectTree.length; a++) {
+                    var objA = objectTree[a];
+                    for (var b = 0; b < objectTree.length; b++) {
+                        if (a == b) continue;
+
+                        var objB = objectTree[b];
+                        // inter-object collisions
+                    }
+                    // single-object collisions
+                    switch(objA.layer) {
+                        case 'gem':
+                            const GEM_COLLISION_RADIUS = 30;
+                            if (magnitude([objA.posX - posX, objA.posY - posY]) <= GEM_COLLISION_RADIUS) {
+                                objA.active = false;
+                                fullState.stats.gems
+                            }
+                            break;
+                    }
+                }
+            }
             // return new state
-            return Object.assign({}, state, { posX, posY, velX, velY });
+            return Object.assign({}, state, { posX, posY, velX, velY, objectTree });
         default: 
             return state;
     }

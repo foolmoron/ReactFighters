@@ -9,3 +9,5 @@ export const MOUSE_MOVE = 'MOUSE_MOVE';
 export const UPDATE = 'UPDATE';
 // objects
 export const OBJECT_ADD = 'OBJECT_ADD';
+// stats
+export const COLLECT_GEM = 'COLLECT_GEM';

@@ -62,6 +62,7 @@ for (var i = 0; i < 10; i++) {
     store.dispatch({
         type: OBJECT_ADD,
         id: i + 1,
+        layer: 'gem',
         name: 'gem' + i,
         parent: 0,
         sprite: gemSprite,
@@ -74,6 +75,7 @@ for (var i = 10; i < 13; i++) {
     store.dispatch({
         type: OBJECT_ADD,
         id: i + 1,
+        layer: 'gem',
         name: 'gem' + i,
         parent: 3,
         sprite: gemSprite,
