@@ -2,7 +2,7 @@
   "name": "react-fighters",
   "version": "1.0.0",
   "scripts": {
-    "dev": "node_modules/.bin/webpack-dev-server.cmd --progress --colors"
+    "dev": "node_modules\\.bin\\webpack-dev-server.cmd --progress --colors"
   },
   "description": "A little RPG game to learn React and Redux",
   "repository": {

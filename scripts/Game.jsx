@@ -71,18 +71,18 @@ for (var i = 0; i < 10; i++) {
         extraClasses: ['pulseAndSway'],
     });
 }
-for (var i = 10; i < 13; i++) {
-    store.dispatch({
-        type: OBJECT_ADD,
-        id: i + 1,
-        layer: 'gem',
-        name: 'gem' + i,
-        parent: 3,
-        sprite: gemSprite,
-        posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
-        posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
-        extraClasses: ['pulseAndSway'],
-    });
-}
+// for (var i = 10; i < 13; i++) {
+//     store.dispatch({
+//         type: OBJECT_ADD,
+//         id: i + 1,
+//         layer: 'gem',
+//         name: 'gem' + i,
+//         parent: 3,
+//         sprite: gemSprite,
+//         posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+//         posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+//         extraClasses: ['pulseAndSway'],
+//     });
+// }
 
 export default Game;
