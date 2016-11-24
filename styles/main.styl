@@ -14,6 +14,12 @@ sprite = 'Press Start 2P', cursive
     -moz-user-drag: none
     -o-user-drag: none
     user-drag: none
+    
+// everything except UI is fixed by default
+*
+    position: fixed
+.ui *
+    position: relative
 
 body
     background: black
