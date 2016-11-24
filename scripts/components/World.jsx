@@ -17,9 +17,9 @@ const World = withTypes({
     var rootNode = objectTree[0];
     return (
         <div className="world">
-            <div className="scrolling-bg" style={{backgroundPositionX: -posX, backgroundPositionY: -posY }}></div>
-            <div className="scrolling-bg dark" style={{backgroundPositionX: -(posX + 24), backgroundPositionY: -(posY + 24) }}></div>
-            <GameObject key={rootNode.index} sprite={rootNode.sprite} posX={rootNode.posX - posX} posY={rootNode.posY - posY} extraClasses={rootNode.extraClasses}>
+            <div className="scrolling-bg" style={{backgroundPositionX: (-posX + innerWidth/2), backgroundPositionY: (-posY + innerHeight/2) }}></div>
+            <div className="scrolling-bg dark" style={{backgroundPositionX: (-posX + innerWidth/2 - 24), backgroundPositionY: (-posY + innerHeight/2 - 24) }}></div>
+            <GameObject key={rootNode.index} sprite={rootNode.sprite} posX={rootNode.posX - posX + innerWidth/2} posY={rootNode.posY - posY + innerHeight/2} extraClasses={rootNode.extraClasses}>
                 {rootNode.children.map(tree)}
             </GameObject>
         </div>

@@ -27,15 +27,14 @@ export default (state = {
                 switch(objA.layer) {
                     case 'gem':
                         const GEM_COLLISION_RADIUS = 50;
-                        // TODO: TREE-SPACE TRANSFORMATION
-                        var screenSpace = [world.posX + (window.innerWidth/2), world.posY + (window.innerHeight/2)];
+                        var worldSpace = [0, 0];
                         var parent = objA;
                         while (parent) {
-                            screenSpace[0] -= parent.posX;
-                            screenSpace[1] -= parent.posY;
+                            worldSpace[0] += parent.posX;
+                            worldSpace[1] += parent.posY;
                             parent = objectTree[parent.parent];
                         }
-                        if (magnitude(screenSpace) <= GEM_COLLISION_RADIUS) {
+                        if (magnitude([worldSpace[0] - world.posX, worldSpace[1] - world.posY]) <= GEM_COLLISION_RADIUS) {
                             objA.active = false;
                             stats.gems++;
                         }

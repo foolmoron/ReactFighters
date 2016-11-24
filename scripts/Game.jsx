@@ -58,7 +58,7 @@ ReactDOM.render(
 );
 
 
-for (var i = 0; i < 10; i++) {
+for (var i = 0; i < 1; i++) {
     store.dispatch({
         type: OBJECT_ADD,
         id: i + 1,
@@ -66,23 +66,23 @@ for (var i = 0; i < 10; i++) {
         name: 'gem' + i,
         parent: 0,
         sprite: gemSprite,
-        posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
-        posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
+        posX: (Math.random() * 1000 + 100) * (Math.random() < 0.5 ? -1 : 1),
+        posY: (Math.random() * 1000 + 100) * (Math.random() < 0.5 ? -1 : 1),
         extraClasses: ['pulseAndSway'],
     });
 }
-// for (var i = 10; i < 13; i++) {
-//     store.dispatch({
-//         type: OBJECT_ADD,
-//         id: i + 1,
-//         layer: 'gem',
-//         name: 'gem' + i,
-//         parent: 3,
-//         sprite: gemSprite,
-//         posX: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
-//         posY: (Math.random() * 1000 + 200) * (Math.random() < 0.5 ? -1 : 1),
-//         extraClasses: ['pulseAndSway'],
-//     });
-// }
+for (var i = 1; i < 13; i++) {
+    store.dispatch({
+        type: OBJECT_ADD,
+        id: i + 1,
+        layer: 'gem',
+        name: 'gem' + i,
+        parent: 1,
+        sprite: gemSprite,
+        posX: (Math.random() * 200 + 100) * (Math.random() < 0.5 ? -1 : 1),
+        posY: (Math.random() * 200 + 100) * (Math.random() < 0.5 ? -1 : 1),
+        extraClasses: ['pulseAndSway'],
+    });
+}
 
 export default Game;
