@@ -38,7 +38,7 @@ export default (state = {
                 posY: action.posY,
                 extraClasses: action.extraClasses || [],
             };
-            objectTree[action.parent].children = objectTree[action.parent].children.concat(node.index);
+            objectTree[node.parent].children = objectTree[node.parent].children.concat(node.index);
             objectTree = objectTree.concat(node);
             return Object.assign({}, state, { objectTree });
         case UPDATE:

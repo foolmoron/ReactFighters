@@ -10,6 +10,7 @@ import { OBJECT_ADD } from './actions';
 import KeyInputContainer from './containers/KeyInputContainer.jsx';
 import MouseInputContainer from './containers/MouseInputContainer.jsx';
 import UpdateContainer from './containers/UpdateContainer.jsx';
+import AddRandomGemsContainer from './containers/AddRandomGemsContainer.jsx';
 
 import GameBorder from './components/GameBorder.jsx';
 import World from './components/World.jsx';
@@ -40,6 +41,7 @@ class Game extends React.Component {
                     <KeyInputContainer />
                     <MouseInputContainer />
                     <UpdateContainer />
+                    <AddRandomGemsContainer />
                 </div>
                 <World />
                 <Character sprite={characterSprite} />
@@ -57,32 +59,29 @@ ReactDOM.render(
     </Provider>, document.getElementById('root')
 );
 
-
-for (var i = 0; i < 1; i++) {
-    store.dispatch({
-        type: OBJECT_ADD,
-        id: i + 1,
-        layer: 'gem',
-        name: 'gem' + i,
-        parent: 0,
-        sprite: gemSprite,
-        posX: (Math.random() * 1000 + 100) * (Math.random() < 0.5 ? -1 : 1),
-        posY: (Math.random() * 1000 + 100) * (Math.random() < 0.5 ? -1 : 1),
-        extraClasses: ['pulseAndSway'],
-    });
-}
-for (var i = 1; i < 13; i++) {
-    store.dispatch({
-        type: OBJECT_ADD,
-        id: i + 1,
-        layer: 'gem',
-        name: 'gem' + i,
-        parent: 1,
-        sprite: gemSprite,
-        posX: (Math.random() * 200 + 100) * (Math.random() < 0.5 ? -1 : 1),
-        posY: (Math.random() * 200 + 100) * (Math.random() < 0.5 ? -1 : 1),
-        extraClasses: ['pulseAndSway'],
-    });
-}
+// for (var i = 0; i < 1; i++) {
+//     store.dispatch({
+//         type: OBJECT_ADD,
+//         layer: 'gem',
+//         name: 'gem' + i,
+//         parent: 0,
+//         sprite: gemSprite,
+//         posX: (Math.random() * 1000 + 100) * (Math.random() < 0.5 ? -1 : 1),
+//         posY: (Math.random() * 1000 + 100) * (Math.random() < 0.5 ? -1 : 1),
+//         extraClasses: ['pulseAndSway'],
+//     });
+// }
+// for (var i = 1; i < 13; i++) {
+//     store.dispatch({
+//         type: OBJECT_ADD,
+//         layer: 'gem',
+//         name: 'gem' + i,
+//         parent: 1,
+//         sprite: gemSprite,
+//         posX: (Math.random() * 200 + 100) * (Math.random() < 0.5 ? -1 : 1),
+//         posY: (Math.random() * 200 + 100) * (Math.random() < 0.5 ? -1 : 1),
+//         extraClasses: ['pulseAndSway'],
+//     });
+// }
 
 export default Game;
