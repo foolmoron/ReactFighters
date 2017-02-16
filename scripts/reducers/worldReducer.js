@@ -54,28 +54,6 @@ export default (state = {
                 posX += velX * dt;
                 posY += velY * dt;
             }
-            // collisions
-            {
-                for (var a = 0; a < objectTree.length; a++) {
-                    var objA = objectTree[a];
-                    for (var b = 0; b < objectTree.length; b++) {
-                        if (a == b) continue;
-
-                        var objB = objectTree[b];
-                        // inter-object collisions
-                    }
-                    // single-object collisions
-                    switch(objA.layer) {
-                        case 'gem':
-                            const GEM_COLLISION_RADIUS = 30;
-                            if (magnitude([objA.posX - posX, objA.posY - posY]) <= GEM_COLLISION_RADIUS) {
-                                objA.active = false;
-                                fullState.stats.gems
-                            }
-                            break;
-                    }
-                }
-            }
             // return new state
             return Object.assign({}, state, { posX, posY, velX, velY, objectTree });
         default: 

@@ -37,7 +37,7 @@ class Game extends React.Component {
     render() {
         return (
             <div className="game">
-                <div className="global-containers" style={{hidden: true}}>
+                <div className="global-containers hidden">
                     <KeyInputContainer />
                     <MouseInputContainer />
                     <UpdateContainer />

@@ -5,21 +5,24 @@ import gemSprite from '../../sprites/gem.png';
 
 class AddRandomGemsContainer extends React.Component {
     componentDidMount() {
-        this.intervalId = setInterval(() => {
-            var angle = Math.random() * Math.PI * 2;
-            this.props.dispatch({
-                type: OBJECT_ADD,
-                layer: 'gem',
-                name: 'randomgem' + Math.floor(Math.random()),
-                sprite: gemSprite,
-                posX: (Math.random() * 500 + 100) * Math.cos(angle),
-                posY: (Math.random() * 500 + 100) * Math.sin(angle),
-                extraClasses: ['pulseAndSway'],
-            });
-        }, 1500);
+        this.intervalId = setInterval(() => {this.newGem()}, 1500);
+        this.newGem();
     }
     componentWillUnmount() {
         clearInteral(this.intervalId);
+    }
+
+    newGem() {
+        var angle = Math.random() * Math.PI * 2;
+        this.props.dispatch({
+            type: OBJECT_ADD,
+            layer: 'gem',
+            name: 'randomgem' + Math.floor(Math.random()),
+            sprite: gemSprite,
+            posX: (Math.random() * 300 + 100) * Math.cos(angle),
+            posY: (Math.random() * 300 + 100) * Math.sin(angle),
+            extraClasses: ['pulseAndSway'],
+        });
     }
 
     render = () => <div className="add-random-gems-container"></div>;

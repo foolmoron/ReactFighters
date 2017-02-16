@@ -1,11 +1,11 @@
-import { UPDATE, OBJECT_ADD, COLLECT_GEM } from '../actions';
+import { POST_UPDATE, OBJECT_ADD, COLLECT_GEM } from '../actions';
 import { magnitude } from '../lib/vector2.js';
 import gemSprite from '../../sprites/gem.png';
 
 export default (state = {
 }, action) => {
     switch (action.type) {
-        case UPDATE:
+        case POST_UPDATE:
             // vars
             var dt = action.dt;
             // new states to return later
